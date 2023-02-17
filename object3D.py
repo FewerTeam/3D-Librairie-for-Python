@@ -27,3 +27,7 @@ class Object3D(object):
             return self.list_points
         else:
             return self.list_points[what]
+
+    def give_top(self, oy, oz):
+        """Give the order of priority of the points."""
+        pass

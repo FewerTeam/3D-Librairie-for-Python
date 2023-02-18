@@ -1,8 +1,8 @@
 """Classe of 3D objects"""
 ###########################
 #EXIT CODES : 
-#1 : Arguemnt error with the arg "id_"
-#
+#1 : Arguemnt error with the arg "id_"#
+# 2 : Argument error : you don't use the good mode name.
 ###########################
 
 class Object3D(object):

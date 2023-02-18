@@ -1,4 +1,9 @@
 """3D librairie"""
+###########################
+#EXIT CODES : 
+#1 : Argument error with the arg "id_"      (object3D file)
+#2 : Argument error : you don't use the good mode name.
+###########################
 #IMPORT
 from tkinter import *
 import object3D     #Dev in the project
@@ -24,6 +29,13 @@ class Screen(object):
         self.type = type3d
         self.lock = lock
         self.showgrid = showgrid
+
+        #Spectator values :
+        self.x = 0
+        self.y = 0
+        self.z = 0
+
+        ############
 
         self.orient_y = 0
         self.orient_z = 0
@@ -155,9 +167,33 @@ class Screen(object):
 
     def set_priority(self):
         """Give the priority of visual (what I show or not)"""
-        #FIRST LEVEL
-        if 0 < self.orient_y < 0:
-            pass
+        pass
+
+    def convertise(self, point3d, perspective="//"):
+        """Convertise points 3d to a points 2d.
+        Arguments:
+        - point 3d : the point 3d (tuple of the 3 axis)
+        return the point 2d
+        - perspective : the perspective used. Can be "//" (parallel) or "()" (humain perspective). "//" is the default value."""
+        if perspective == "//":
+            return self._convertise_parallel(point3d)
+        elif perspective == "()":
+            return self._convertise_humain(point3d)
+        else:
+            raise Exception("This mode doesn't exist, or isn't anvaible. Please check the doc.")
+            exit(2)
+        
+
+    def _convertise_parallel(self, point3d):
+        """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
+        Arguments : 
+        - point3d : the point3d who will be convertised."""
+
+    def _convertise_humain(self, point3d):
+        """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
+        Arguments : 
+        - point3d : the point3d who will be convertised."""
+
 
     def build(self):
         """Build all the 3d object into the screen"""

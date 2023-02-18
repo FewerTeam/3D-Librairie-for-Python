@@ -2,7 +2,7 @@
 ###########################
 #EXIT CODES : 
 #1 : Argument error with the arg "id_"      (object3D file)
-#2 : Argument error : you don't use the good mode name.
+#2 : Argument error : you don't use the good mode name.     (screen file)
 ###########################
 #IMPORT
 from tkinter import *

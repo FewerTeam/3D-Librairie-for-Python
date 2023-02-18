@@ -80,3 +80,13 @@ class Cube(Object3D):
             self.create_face([self.list_points[0]], self.list_points[3], self.list_points[5], self.list_points[6]).append(self.list_faces)
             self.create_face([self.list_points[2]], self.list_points[3], self.list_points[4], self.list_points[7]).append(self.list_faces)
             self.create_face([self.list_points[1]], self.list_points[2], self.list_points[7], self.list_points[6]).append(self.list_faces)
+
+        else:       #the same but with the selected tuple for the skin
+            self.create_face([self.list_points[0]], self.list_points[1], self.list_points[2], self.list_points[3], self.skin).append(self.list_faces)
+            self.create_face([self.list_points[4]], self.list_points[5], self.list_points[6], self.list_points[7], self.skin).append(self.list_faces)
+            self.create_face([self.list_points[0]], self.list_points[1], self.list_points[6], self.list_points[5], self.skin).append(self.list_faces)
+            self.create_face([self.list_points[0]], self.list_points[3], self.list_points[5], self.list_points[6], self.skin).append(self.list_faces)
+            self.create_face([self.list_points[2]], self.list_points[3], self.list_points[4], self.list_points[7], self.skin).append(self.list_faces)
+            self.create_face([self.list_points[1]], self.list_points[2], self.list_points[7], self.list_points[6], self.skin).append(self.list_faces)
+        
+        

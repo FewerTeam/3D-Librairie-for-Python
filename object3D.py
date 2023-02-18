@@ -33,10 +33,11 @@ class Object3D(object):
         """Give the order of priority of the points."""
         pass
 
-    def create_edge(self, points):
+    def create_edge(self, point1, point2):
         """Create a new edge.
         Arguments :
-        - points : a list with 2 points."""
+        - point1 : The first point.
+        - point2 : the second point."""
 
     def create_face(self, points, skin=("color", "blue")):
         """Create a new face.
@@ -48,7 +49,18 @@ class Cube(Object3D):
     def __init__(self, points, color, id_='DO NOT TOUCH IT !'):
         """This class from Object3d allow to create a cube."""
         super(Object3D, self).__init__(points, color, id_)
-        #Check if there are 8 points.
+        #Check if there are 8 points, else return an error : a cube have 8 points, edges and 6 faces.
         if not(len(points) == 8):
             raise AttributeError("A cube must have 8 points ! For create an other object, use Object3d !")
         
+        #Here we create all the edges of the cube, and add them to the list.
+        x = self.list_points
+        x.pop()
+        for i, j in enumerate(x):
+            self.create_edge(self.list_points[i], self.list_points[i + 1]).append(self.list_edge)
+        
+        self.create_edge(self.list_points[7], self.list_points[4]).append(self.list_edge)
+        self.create_edge(self.list_points[7], self.list_points[2]).append(self.list_edge)
+        self.create_edge(self.list_points[6], self.list_points[1]).append(self.list_edge)
+        self.create_edge(self.list_points[7], self.list_points[4]).append(self.list_edge)
+        self.create_edge(self.list_points[0], self.list_points[5]).append(self.list_edge)

@@ -46,5 +46,9 @@ class Object3D(object):
 
 class Cube(Object3D):
     def __init__(self, points, color, id_='DO NOT TOUCH IT !'):
+        """This class from Object3d allow to create a cube."""
         super(Object3D, self).__init__(points, color, id_)
+        #Check if there are 8 points.
+        if not(len(points) == 8):
+            raise AttributeError("A cube must have 8 points ! For create an other object, use Object3d !")
         

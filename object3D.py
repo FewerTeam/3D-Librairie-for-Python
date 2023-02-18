@@ -20,19 +20,10 @@ class Object3D(object):
             exit(1)
         self.id_ = id_
 
-    def get(self, what="ALL"):
+    def get(self):
         """Return the coords of the points.
-        Arguments :
-        - what : which point return (a number or "ALL", "ALL" is default.)
         """
-        if what == "ALL":
-            return self.list_points
-        else:
-            return self.list_points[what]
-
-    def give_top(self, oy, oz):
-        """Give the order of priority of the points."""
-        pass
+        return (self.list_edges, self.list_faces)
 
     def create_edge(self, point1, point2):
         """Create a new edge.
@@ -89,4 +80,4 @@ class Cube(Object3D):
             self.create_face([self.list_points[2]], self.list_points[3], self.list_points[4], self.list_points[7], self.skin).append(self.list_faces)
             self.create_face([self.list_points[1]], self.list_points[2], self.list_points[7], self.list_points[6], self.skin).append(self.list_faces)
         
-        
+    

@@ -1,5 +1,5 @@
 # Python-3DLibs
-This project will be a python librairy who allow you to create 3D app.
+This project will be a python librairy who allow you to create easily 3D app.
 
 ###########################
 #EXIT CODES : 

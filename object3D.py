@@ -87,15 +87,17 @@ class Cube(Object3D):
         #Here we create all the faces of the cube, and add them to the list.
 
         if self.skin == None:
-            self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[1-1], self.list_points[2-1], self.list_points[3-1]]))
-            self.list_faces.append(self.create_face([self.list_points[4-1], self.list_points[5-1], self.list_points[6-1], self.list_points[7-1]]))
-            self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[1-1], self.list_points[6-1], self.list_points[5-1]]))
-            self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[3-1], self.list_points[5-1], self.list_points[6-1]]))
-            self.list_faces.append(self.create_face([self.list_points[2-1], self.list_points[3-1], self.list_points[4-1], self.list_points[7-1]]))
-            self.list_faces.append(self.create_face([self.list_points[1-1], self.list_points[2-1], self.list_points[7-1], self.list_points[6-1]]))
+            #GOOD
+            self.list_faces.append(self.create_face([self.list_points[0], self.list_points[2-1], self.list_points[7-1], self.list_points[6-1]]))
+            self.list_faces.append(self.create_face([self.list_points[-1], self.list_points[6], self.list_points[1], self.list_points[2]]))
+            self.list_faces.append(self.create_face([self.list_points[-1], self.list_points[6], self.list_points[5], self.list_points[4]]))
+            self.list_faces.append(self.create_face([self.list_points[2], self.list_points[-1], self.list_points[4], self.list_points[3]]))
+            self.list_faces.append(self.create_face([self.list_points[3], self.list_points[4], self.list_points[5], self.list_points[0]]))
+            self.list_faces.append(self.create_face([self.list_points[0], self.list_points[1], self.list_points[2], self.list_points[3]]))#
+
 
         else:       #the same but with the selected tuple for the skin
-            self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[1-1], self.list_points[2-1], self.list_points[3-1]], self.skin))
+            #self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[1-1], self.list_points[2-1], self.list_points[3-1]], self.skin))
             self.list_faces.append(self.create_face([self.list_points[4-1], self.list_points[5-1], self.list_points[6-1], self.list_points[7-1]], self.skin))
             self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[1-1], self.list_points[6-1], self.list_points[5-1]], self.skin))
             self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[3-1], self.list_points[5-1], self.list_points[6-1]], self.skin))

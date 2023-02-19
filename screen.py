@@ -199,15 +199,25 @@ class Screen(object):
     def build(self, mode="//"):
         """Build all the 3d object into the screen"""
         for i in self.list_object:
+            #convert edges
             for j in i.list_edges:
                 i.list_edges2d.append((self.convertise(j[0], mode), (self.convertise(j[1], mode))))
+            #convert faces
             for j in i.list_faces:
-                for k in j:
-                    pass
-                    #i.list_faces2d.append(self.convertise(k, mode))
-            
+                lst = []
+                for k in j[0]:
+                    lst.append(self.convertise(k, mode))
+                i.list_faces2d.append((lst, j[1]))
+                
+            #show faces
+            for j in i.list_faces2d:
+                if j[1][0] == "color":
+                    self.screen.create_polygon(j[0][0], j[0][1], j[0][2], j[0][3], fill=j[1][1], outline="black")
+
+            #show edges
+            """
             for j in i.list_edges2d:
-                self.screen.create_line(j[0][0], j[0][1], j[1][0], j[1][1], fill="black")
+                self.screen.create_line(j[0][0], j[0][1], j[1][0], j[1][1], fill="black")"""
 
         self.screen.update()
         self.root.update()
@@ -221,7 +231,5 @@ if __name__ == "__main__":
     module = Screen(410, 410, "yo le test")
     a = object3D.Cube([(10, 10, 10), (20, 10, 10), (20, 10, 20), (10, 10, 20), (10, 20, 20), (10, 20, 10), (20, 20, 10), (20, 20, 20)], color="blue", id_=module.get_id())
     module.add_object(a)
-    a.__repr__()
-    #module.allow_move()
     module.addquitbutton("EXIT")
     module.mainloop()

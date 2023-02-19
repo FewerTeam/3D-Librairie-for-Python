@@ -221,6 +221,7 @@ if __name__ == "__main__":
     module = Screen(410, 410, "yo le test")
     a = object3D.Cube([(10, 10, 10), (20, 10, 10), (20, 10, 20), (10, 10, 20), (10, 20, 20), (10, 20, 10), (20, 20, 10), (20, 20, 20)], color="blue", id_=module.get_id())
     module.add_object(a)
+    a.__repr__()
     #module.allow_move()
     module.addquitbutton("EXIT")
     module.mainloop()

@@ -22,6 +22,22 @@ class Object3D(object):
             exit(1)
         self.id_ = id_
 
+    def __repr__(self):
+        print("""
+        ------------------------------------------------------
+        3D object with id {0}
+        ----------- Points -------------""".format(self.id_))
+        for j, i in enumerate(self.list_points):
+            print(str(j+1) + " : " + i.__repr__())
+        print("----------- Edges -------------")
+        for j, i in enumerate(self.list_edges):
+            print(str(j+1) + " : " + i.__repr__())
+        print("----------- Faces -------------")
+        for j, i in enumerate(self.list_faces):
+            print(str(j+1) + " : " + i.__repr__())
+        print("------------------------------------------------------\n")
+
+
     def get(self):
         """Return the coords of the points.
         """
@@ -86,4 +102,3 @@ class Cube(Object3D):
             self.list_faces.append(self.create_face([self.list_points[2-1], self.list_points[3-1], self.list_points[4-1], self.list_points[7-1]], self.skin))
             self.list_faces.append(self.create_face([self.list_points[1-1], self.list_points[2-1], self.list_points[7-1], self.list_points[6-1]], self.skin))
         
-    

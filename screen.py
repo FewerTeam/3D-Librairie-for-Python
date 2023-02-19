@@ -135,7 +135,7 @@ class Screen(object):
 
     def add_object(self, object3d):
         """Add an object to the screen.
-        Arguement : 
+        Argument : 
         - object3d : the 3D object.
         """
         self.list_object.append(object3d)
@@ -146,7 +146,7 @@ class Screen(object):
         """Reload the Screen."""
         self.list_points = []
         self.priority = []
-        self.set_priority()
+        #self.set_priority()
         self.screen.destroy()
         self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
         self.screen.pack()
@@ -188,6 +188,7 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+        return (point3d[0]**(point3d[2]/10), point3d[1]**(point3d[2]/10))         #will be changed, it is for a test.
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
@@ -195,24 +196,31 @@ class Screen(object):
         - point3d : the point3d who will be convertised."""
 
 
-    def build(self):
+    def build(self, mode="//"):
         """Build all the 3d object into the screen"""
-        #Enumerating the list of objects and giving their points list
         for i in self.list_object:
-            #i = one object
-            x = i.get()
-            #giving i's list of tuple
-            for j in x:
-                #j = a tuple
-                pass
+            for j in i.list_edges:
+                i.list_edges2d.append((self.convertise(j[0], mode), (self.convertise(j[1], mode))))
+            for j in i.list_faces:
+                for k in j:
+                    pass
+                    #i.list_faces2d.append(self.convertise(k, mode))
+            
+            for j in i.list_edges2d:
+                self.screen.create_line(j[0][0], j[0][1], j[1][0], j[1][1], fill="black")
 
         self.screen.update()
         self.root.update()
 
+    def get_id(self):
+        return len(self.list_object) + 1
+
 #MAIN
 if __name__ == "__main__":
     print("DO NOT USE IT LIKE THAT ! It is a module of a librairie !")
-    module = Screen(200, 200, "yo le test")
-    module.allow_move()
+    module = Screen(410, 410, "yo le test")
+    a = object3D.Cube([(10, 10, 10), (20, 10, 10), (20, 10, 20), (10, 10, 20), (10, 20, 20), (10, 20, 10), (20, 20, 10), (20, 20, 20)], color="blue", id_=module.get_id())
+    module.add_object(a)
+    #module.allow_move()
     module.addquitbutton("EXIT")
     module.mainloop()

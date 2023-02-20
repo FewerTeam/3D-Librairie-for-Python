@@ -123,19 +123,19 @@ class Screen(object):
     
     def move_l(self, value):
         print("I go to the left with value {0}".format(value))
-        self.orient_y += value
+        self.x += value
 
     def move_r(self, value):
         print("I go to the right with value {0}".format(value))
-        self.orient_y -= value
+        self.x -= value
 
     def move_u(self, value):
         print("I go to the up with value {0}".format(value))
-        self.orient_z += value
+        self.y -= value
 
     def move_d(self, value):
         print("I go to the down with value {0}".format(value))
-        self.orient_z -= value
+        self.y += value
 
     def mainloop(self):
         mainloop()
@@ -195,7 +195,8 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        return (point3d[0]*(point3d[2]/(self.orient_z+5.5)), point3d[1]*(point3d[2]/(self.orient_y+5.5)))         #will be changed, it is for a test.
+        return (point3d[0]/(point3d[2]*self.x+1.5), 
+        point3d[1]/(point3d[2]+self.y+1.5))         #will be changed, it is for a test.
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
@@ -230,7 +231,14 @@ class Screen(object):
         self.root.update()
 
     def get_id(self):
+        """Return a new id for a new 3D object."""
         return len(self.list_object) + 1
+
+    def addframe(self):
+        """Add a "border" to the screen"""
+        p1 = self.convertise((0, 0, 0))
+        p2 = self.convertise((self.width, self.height, 0))
+        self.screen.create_rectangle(p1[0], p1[1], p2[0], p2[1], outline="black")
 
 #MAIN
 if __name__ == "__main__":
@@ -239,5 +247,6 @@ if __name__ == "__main__":
     a = object3D.Cube([(10, 10, 10), (20, 10, 10), (20, 10, 20), (10, 10, 20), (10, 20, 20), (10, 20, 10), (20, 20, 10), (20, 20, 20)], color="blue", id_=module.get_id())
     module.add_object(a)
     module.allow_move()
+    module.addframe()
     module.addquitbutton("EXIT")
     module.mainloop()

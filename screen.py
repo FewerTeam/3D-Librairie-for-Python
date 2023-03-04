@@ -195,8 +195,13 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        return (point3d[0]/(point3d[2]*self.x+1.5), 
-        point3d[1]/(point3d[2]+self.y+1.5))         #will be changed, it is for a test.
+        try:
+            x = point3d[2] / (2 - self.orient_y)
+            y = point3d[2] / (2 - self.orient_z)
+        except ZeroDivisionError:
+            x = point3d[2] / (2)
+            y = point3d[2] / (2)
+        return (point3d[0]*x, point3d[1]*y)
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.

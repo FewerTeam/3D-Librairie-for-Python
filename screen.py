@@ -22,6 +22,7 @@ class Screen(object):
         - showgrid : define if we show the grid of the 3 axis (default True).
         - title : the title of the screen.
         """
+        self.zoom = 10
         self.width = width
         self.height = height
         self.title = title
@@ -123,19 +124,19 @@ class Screen(object):
     
     def move_l(self, value):
         print("I go to the left with value {0}".format(value))
-        self.x += value
+        self.orient_y += value
 
     def move_r(self, value):
         print("I go to the right with value {0}".format(value))
-        self.x -= value
+        self.orient_y -= value
 
     def move_u(self, value):
         print("I go to the up with value {0}".format(value))
-        self.y -= value
+        self.orient_z -= value
 
     def move_d(self, value):
         print("I go to the down with value {0}".format(value))
-        self.y += value
+        self.orient_z += value
 
     def mainloop(self):
         mainloop()
@@ -195,13 +196,13 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        try:
-            x = point3d[2] / (2 - self.orient_y)
-            y = point3d[2] / (2 - self.orient_z)
-        except ZeroDivisionError:
-            x = point3d[2] / (2)
-            y = point3d[2] / (2)
-        return (point3d[0]*x, point3d[1]*y)
+        if point3d[2] == 0:
+            x = point3d[0] / 2 - self.x
+            y = point3d[1] / 2 - self.y
+        else:
+            x = (point3d[0] - point3d[2]) / (2 * point3d[2]) - self.x
+            y = (point3d[1] - point3d[2]) / (2 * point3d[2]) - self.y
+        return (point3d[0]  *self.zoom, point3d[1] * self.zoom)
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.

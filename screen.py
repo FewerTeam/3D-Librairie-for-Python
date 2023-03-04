@@ -196,12 +196,14 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+
+        #NOTE FOR DEV : https://fr.wikipedia.org/wiki/Reconstruction_3D_%C3%A0_partir_d%27images
         if point3d[2] == 0:
-            x = point3d[0] / 2 - self.x
-            y = point3d[1] / 2 - self.y
+            x = point3d[0] / 2
+            y = point3d[1] / 2
         else:
-            x = (point3d[0] - point3d[2]) / (2 * point3d[2]) - self.x
-            y = (point3d[1] - point3d[2]) / (2 * point3d[2]) - self.y
+            x = (point3d[0] + point3d[2]) / (2 * point3d[2])
+            y = (point3d[1] + point3d[2]) / (2 * point3d[2])
         return (point3d[0]  *self.zoom, point3d[1] * self.zoom)
 
     def _convertise_humain(self, point3d):

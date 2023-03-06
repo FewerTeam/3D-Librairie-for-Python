@@ -235,14 +235,3 @@ class Screen(object):
         p1 = self.convertise((0, 0, 0))
         p2 = self.convertise((self.width, self.height, 0))
         self.screen.create_rectangle(p1[0], p1[1], p2[0], p2[1], outline="black")
-
-#MAIN
-if __name__ == "__main__":
-    print("DO NOT USE IT LIKE THAT ! It is a module of a librairie !")
-    module = Screen(410, 410, "yo le test")
-    a = object3D.Cube([(10, 10, 10), (20, 10, 10), (20, 10, 20), (10, 10, 20), (10, 20, 20), (10, 20, 10), (20, 20, 10), (20, 20, 20)], color="blue", id_=module.get_id())
-    module.add_object(a)
-    module.allow_move()
-    module.addframe()
-    module.addquitbutton("EXIT")
-    module.mainloop()

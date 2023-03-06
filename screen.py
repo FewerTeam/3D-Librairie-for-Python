@@ -1,12 +1,8 @@
 """3D librairie"""
-###########################
-#EXIT CODES : 
-#1 : Argument error with the arg "id_"      (object3D file)
-#2 : Argument error : you don't use the good mode name.     (screen file)
-###########################
 #IMPORT
 from tkinter import *
 import object3D     #Dev in the project
+from errors import *
 
 class Screen(object):
     """Screen is a class who create a Tk screen, and who can have 3d objects."""
@@ -167,7 +163,7 @@ class Screen(object):
                 #j = a tuple
                 #Checking if the tuple has 3 items
                 if not(len(x) == 2):
-                    raise ValueError("A tuple hasn't got 3 items, but less or more.")
+                    raise PointError("A point hasn't got 3 coords.")
                 
                 
         self.build()
@@ -187,7 +183,7 @@ class Screen(object):
         elif perspective == "()":
             return self._convertise_humain(point3d)
         else:
-            raise Exception("This mode doesn't exist, or isn't anvaible. Please check the doc.")
+            raise UnknowModeNameError("This mode doesn't exist, or isn't anvaible. Please check the doc.")
             exit(2)
         
 

@@ -1,9 +1,5 @@
 """Classe of 3D objects"""
-###########################
-#EXIT CODES : 
-#1 : Argument error with the arg "id_"      (object3D file)
-#2 : Argument error : you don't use the good mode name.     (screen file)
-###########################
+from errors import *
 
 class Object3D(object):
     def __init__(self, points, color, id_='DO NOT TOUCH IT !'):
@@ -18,7 +14,7 @@ class Object3D(object):
         self.list_faces2d = []
         self.color = color
         if id_ == "DO NOT TOUCH IT !":
-            raise AttributeError("Sorry, but you must give this argument (id_). For it, you have to use Screen.get_id(), it gener id.")
+            raise ArgumentError("Sorry, but you must give this argument (id_). For it, you have to use Screen.get_id(), it gener id.")
             exit(1)
         self.id_ = id_
 
@@ -39,7 +35,7 @@ class Object3D(object):
 
 
     def get(self):
-        """Return the coords of the points.
+        """Return edges and faces
         """
         return (self.list_edges, self.list_faces)
 
@@ -70,7 +66,7 @@ class Cube(Object3D):
         self.skin = skin
         #Check if there are 8 points, else return an error : a cube have 8 points, edges and 6 faces.
         if not(len(points) == 8):
-            raise AttributeError("A cube must have 8 points ! For create an other object, use Object3d !")
+            raise CubePointsError("A cube must have 8 points ! For create an other object, use Object3d !")
         
         #Here we create all the edges of the cube, and add them to the list.
         x = self.list_points

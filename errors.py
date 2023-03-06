@@ -13,5 +13,5 @@ class Object3DError(Exception):
 class CubePointsError(Object3DError):
     pass
 
-class PointError(object):
+class PointError(Exception):
     pass

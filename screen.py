@@ -108,7 +108,7 @@ class Screen(object):
                     raise PointError("A point hasn't got 3 coords.")
                 
 
-    def convertise(self, point3d, perspective="//"):
+    def convertise(self, point3d, perspective="()"):
         """Convertise points 3d to a points 2d.
         Arguments:
         - point 3d : the point 3d (tuple of the 3 axis)
@@ -127,15 +127,15 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        factor = (point3d[2] / 10) * self.zoom
-        return ((point3d[0] * factor), 
-                (point3d[1] * factor))
+        raise NotTestedCodeWarning("This method wasn't tested / coded ! Please check the version of the librairie.")
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        raise NotTestedCodeWarning("This method wasn't tested / coded ! Please check the version of the librairie.")
+        factor = (point3d[2] / 10) * self.zoom
+        return ((point3d[0] * factor), 
+                (point3d[1] * factor))
 
     def set_zoom(self, zoom):
         """Modify the zoom factor.
@@ -144,7 +144,7 @@ class Screen(object):
         self.zoom = zoom
 
 
-    def build(self, mode="//"):
+    def build(self, mode="()"):
         """Build all the 3d object into the screen"""
         for i in self.list_object:
             #convert edges

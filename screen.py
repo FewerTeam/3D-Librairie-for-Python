@@ -26,7 +26,9 @@ class Screen(object):
         self.lock = lock
         self.showgrid = showgrid
 
-        #Spectator values :
+        self.zoom = 1
+
+        #Spectator values :ignore
         self.x = 0
         self.y = 0
         self.z = 0
@@ -74,65 +76,6 @@ class Screen(object):
         if self.showgrid == False:
             self.showgrid = True
 
-    def allow_move(self):
-        self.screen.bind("<B2-Motion>", self.move)
-        self.last_x = 0
-        self.last_y = 0
-
-    def move(self, event):
-        x = event.x
-        y = event.y
-        #Determine the type of the event
-        if x < self.last_x:
-            etx = "Left"
-        elif x > self.last_x:
-            etx = "Right"
-        else:
-            etx = None
-        if y < self.last_y:
-            ety = "Up"
-        elif y > self.last_y:
-            ety = "Down"
-        else:
-            ety = None
-        
-        #Move
-        if etx == "Left":
-            v = self.last_x - x
-            self.move_l(v)
-        if etx == "Right":
-            v = x - self.last_x
-            self.move_r(v)
-        if ety == "Up":
-            v = self.last_y - y
-            self.move_u(v)
-        if ety == "Down":
-            v = y - self.last_y
-            self.move_d(v)
-
-        self.last_x = x
-        self.last_y = y
-
-        self.reload()
-        self.allow_move()
-
-    
-    def move_l(self, value):
-        print("I go to the left with value {0}".format(value))
-        self.x += value
-
-    def move_r(self, value):
-        print("I go to the right with value {0}".format(value))
-        self.x -= value
-
-    def move_u(self, value):
-        print("I go to the up with value {0}".format(value))
-        self.y -= value
-
-    def move_d(self, value):
-        print("I go to the down with value {0}".format(value))
-        self.y += value
-
     def mainloop(self):
         mainloop()
 
@@ -168,10 +111,6 @@ class Screen(object):
                 
         self.build()
 
-    def set_priority(self):
-        """Give the priority of visual (what I show or not)"""
-        pass
-
     def convertise(self, point3d, perspective="//"):
         """Convertise points 3d to a points 2d.
         Arguments:
@@ -191,8 +130,8 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        return (point3d[0]/(point3d[2]*self.x+1.5), 
-        point3d[1]/(point3d[2]+self.y+1.5))         #will be changed, it is for a test.
+        return ((point3d[0] * (point3d[2] / 10)*self.zoom), 
+                (point3d[1] * (point3d[2] / 10)*self.zoom))
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
@@ -229,9 +168,4 @@ class Screen(object):
     def get_id(self):
         """Return a new id for a new 3D object."""
         return len(self.list_object) + 1
-
-    def addframe(self):
-        """Add a "border" to the screen"""
-        p1 = self.convertise((0, 0, 0))
-        p2 = self.convertise((self.width, self.height, 0))
-        self.screen.create_rectangle(p1[0], p1[1], p2[0], p2[1], outline="black")
+    

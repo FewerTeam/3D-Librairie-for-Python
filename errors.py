@@ -15,3 +15,6 @@ class CubePointsError(Object3DError):
 
 class PointError(Exception):
     pass
+
+class NotTestedCodeWarning(Warning):
+    pass

@@ -89,10 +89,9 @@ class Screen(object):
         
 
     def reload(self):
-        """Reload the Screen."""
+        """Reload the Screen : show modifications"""
         self.list_points = []
         self.priority = []
-        #self.set_priority()
         self.screen.destroy()
         self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
         self.screen.pack()
@@ -108,8 +107,6 @@ class Screen(object):
                 if not(len(x) == 2):
                     raise PointError("A point hasn't got 3 coords.")
                 
-                
-        self.build()
 
     def convertise(self, point3d, perspective="//"):
         """Convertise points 3d to a points 2d.
@@ -130,13 +127,21 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        return ((point3d[0] * (point3d[2] / 10)*self.zoom), 
-                (point3d[1] * (point3d[2] / 10)*self.zoom))
+        factor = (point3d[2] / 10) * self.zoom
+        return ((point3d[0] * factor), 
+                (point3d[1] * factor))
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+        raise NotTestedCodeWarning("This method wasn't tested / coded ! Please check the version of the librairie.")
+
+    def set_zoom(self, zoom):
+        """Modify the zoom factor.
+        Arguments : 
+        - zoom : the new zoom factor --> float (0 < zoom)"""
+        self.zoom = zoom
 
 
     def build(self, mode="//"):

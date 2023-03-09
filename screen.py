@@ -2,7 +2,7 @@
 #IMPORT
 from tkinter import *
 import object3D     #Dev in the project
-from errors import *
+from Python_3D_Libs_errors import *
 
 class Screen(object):
     """Screen is a class who create a Tk screen, and who can have 3d objects."""
@@ -133,6 +133,8 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+        return ((point3d[0] + point3d[2]/2)*self.zoom, 
+                (point3d[1] + point3d[2]/2)*self.zoom)
         factor = (point3d[2] / 10) * self.zoom
         return ((point3d[0] * factor), 
                 (point3d[1] * factor))

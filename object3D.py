@@ -1,5 +1,5 @@
 """Classe of 3D objects"""
-from errors import *
+from Python_3D_Libs_errors import *
 
 class Object3D(object):
     def __init__(self, points, color, id_='DO NOT TOUCH IT !'):

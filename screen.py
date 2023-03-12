@@ -143,7 +143,6 @@ class Screen(object):
         self.reload()
         self.build()
         self.allow_move()
-        print(self)
 
     
     def move_l(self, value):
@@ -176,10 +175,13 @@ class Screen(object):
 
     def reload(self):
         """Reload the Screen."""
-        #self.set_priority()
         self.screen.destroy()
         self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
         self.screen.pack()
+        #reset lists
+        for i in self.list_object:
+            i.list_faces2d = []
+            i.list_edges2d = []
 
     def set_priority(self):
         """Give the priority of visual (what I show or not)"""
@@ -212,9 +214,6 @@ class Screen(object):
         - point3d : the point3d who will be convertised."""
         return ((point3d[0] + point3d[2]/2)*self.zoom + self.x, 
                 (point3d[1] + point3d[2]/2)*self.zoom + self.y)
-        factor = (point3d[2] / 10) * self.zoom
-        return ((point3d[0] * factor), 
-                (point3d[1] * factor))
     
     def set_zoom(self, zoom):
         """Modify the zoom factor.
@@ -222,6 +221,13 @@ class Screen(object):
         - zoom : the new zoom factor --> float (0 < zoom)"""
         self.zoom = zoom
 
+    def modify_zoom(self, mod):
+        """Modify the zoom factor
+        Arguments :
+        - mod : the modificator of the zoom (float or int). It is added to Screen.zoom
+        --> return Screen.zoom"""
+        self.zoom += mod
+        return self.zoom
 
     def build(self, mode="()"):
         """Build all the 3d object into the screen"""

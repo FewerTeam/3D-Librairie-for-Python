@@ -95,8 +95,8 @@ class Screen(object):
     def allow_move(self):
         """Allow translations"""
         self.screen.bind("<B1-Motion>", self.move)
-        self.last_x = 0
-        self.last_y = 0
+        self.last_x = self.width / 2
+        self.last_y = self.height / 2
 
     def move(self, event):
         x = event.x
@@ -104,17 +104,17 @@ class Screen(object):
         #Determine the type of the event
         #
         #### ! LOGICAL ERROR HERE ! ######
-        # --> execute testfile.py
+        # --> execute testfile.py and try to move with left click and motion
         if x < self.last_x:
             etx = "Left"
         elif x > self.last_x:
-            etx = "Right"       #
+            etx = "Right"
         else:
             etx = None
         if y < self.last_y:
             ety = "Up"
         elif y > self.last_y:
-            ety = "Down"        #
+            ety = "Down"
         else:
             ety = None
         

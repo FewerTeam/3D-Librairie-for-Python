@@ -2,7 +2,7 @@
 #IMPORT
 from tkinter import *
 import object3D     #Dev in the project
-from errors import *
+from Python_3D_Libs_errors import *
 
 class Screen(object):
     """Screen is a class who create a Tk screen, and who can have 3d objects."""
@@ -75,7 +75,8 @@ class Screen(object):
             self.showgrid = True
 
     def allow_move(self):
-        self.screen.bind("<B2-Motion>", self.move)
+        """Allow translations"""
+        self.screen.bind("<B1-Motion>", self.move)
         self.last_x = 0
         self.last_y = 0
 
@@ -164,15 +165,12 @@ class Screen(object):
                 #Checking if the tuple has 3 items
                 if not(len(x) == 2):
                     raise PointError("A point hasn't got 3 coords.")
-                
-                
-        self.build()
 
     def set_priority(self):
         """Give the priority of visual (what I show or not)"""
         pass
 
-    def convertise(self, point3d, perspective="//"):
+    def convertise(self, point3d, perspective="()"):
         """Convertise points 3d to a points 2d.
         Arguments:
         - point 3d : the point 3d (tuple of the 3 axis)
@@ -191,16 +189,26 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        return (point3d[0]/(point3d[2]*self.x+1.5), 
-        point3d[1]/(point3d[2]+self.y+1.5))         #will be changed, it is for a test.
+        raise NotTestedCodeWarning("This method wasn't tested / coded ! Please check the version of the librairie.")
 
     def _convertise_humain(self, point3d):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+        return ((point3d[0] + point3d[2]/2)*self.zoom + self.x, 
+                (point3d[1] + point3d[2]/2)*self.zoom + self.y)
+        factor = (point3d[2] / 10) * self.zoom
+        return ((point3d[0] * factor), 
+                (point3d[1] * factor))
+    
+    def set_zoom(self, zoom):
+        """Modify the zoom factor.
+        Arguments : 
+        - zoom : the new zoom factor --> float (0 < zoom)"""
+        self.zoom = zoom
 
 
-    def build(self, mode="//"):
+    def build(self, mode="()"):
         """Build all the 3d object into the screen"""
         for i in self.list_object:
             #convert edges

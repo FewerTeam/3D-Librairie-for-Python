@@ -94,9 +94,7 @@ class Screen(object):
 
     def allow_move(self):
         """Allow translations"""
-        self.screen.bind("<B1-Motion>", self.move)
-        self.last_x = self.width / 2
-        self.last_y = self.height / 2
+        self.screen.bind("<Button-1>", self.move)
 
     def move(self, event):
         x = event.x

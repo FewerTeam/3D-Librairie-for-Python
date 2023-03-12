@@ -84,37 +84,46 @@ class Screen(object):
         x = event.x
         y = event.y
         #Determine the type of the event
+        #
+        #### ! LOGICAL ERROR HERE ! ######
+        # --> execute testfile.py
         if x < self.last_x:
             etx = "Left"
         elif x > self.last_x:
-            etx = "Right"
+            etx = "Right"       #
         else:
             etx = None
         if y < self.last_y:
             ety = "Up"
         elif y > self.last_y:
-            ety = "Down"
+            ety = "Down"        #
         else:
             ety = None
         
         #Move
+        MOD = 50
         if etx == "Left":
             v = self.last_x - x
+            v /= MOD
             self.move_l(v)
         if etx == "Right":
             v = x - self.last_x
+            v /= MOD
             self.move_r(v)
         if ety == "Up":
             v = self.last_y - y
+            v /= MOD
             self.move_u(v)
         if ety == "Down":
             v = y - self.last_y
+            v /= MOD
             self.move_d(v)
 
         self.last_x = x
         self.last_y = y
 
         self.reload()
+        self.build()
         self.allow_move()
 
     

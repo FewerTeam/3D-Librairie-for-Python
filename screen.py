@@ -53,6 +53,24 @@ class Screen(object):
 
         self.list_object = []
 
+    def __str__(self):
+        for i, j in enumerate(self.list_object):
+            return "Object {0} : \n{1}".format(i, j)
+        if self.list_object == []:
+            return "There is nothing to show..."
+        
+    def __repr__(self):
+        for i, j in enumerate(self.list_object):
+            return "Object {0} : \n{1}".format(str(i), j)
+        if self.list_object == []:
+            return "There is nothing to show..."
+        
+    def __del__(self):
+        try:
+            self.root.destroy()
+        except:
+            pass
+
     def addquitbutton(self, text):
         """Show the quit button in the screen, and ad text to it."""
         if self.quitbtn == None:
@@ -125,6 +143,7 @@ class Screen(object):
         self.reload()
         self.build()
         self.allow_move()
+        print(self)
 
     
     def move_l(self, value):
@@ -157,27 +176,14 @@ class Screen(object):
 
     def reload(self):
         """Reload the Screen."""
-        self.list_points = []
-        self.priority = []
         #self.set_priority()
         self.screen.destroy()
         self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
         self.screen.pack()
 
-        #Enumerating the list of objects and giving their points list
-        for i in self.list_object:
-            #i = one object
-            x = i.get()
-            #giving i's list of tuple
-            for j in x:
-                #j = a tuple
-                #Checking if the tuple has 3 items
-                if not(len(x) == 2):
-                    raise PointError("A point hasn't got 3 coords.")
-
     def set_priority(self):
         """Give the priority of visual (what I show or not)"""
-        pass
+        ...
 
     def convertise(self, point3d, perspective="()"):
         """Convertise points 3d to a points 2d.
@@ -234,11 +240,6 @@ class Screen(object):
             for j in i.list_faces2d:
                 if j[1][0] == "color":
                     self.screen.create_polygon(j[0][0], j[0][1], j[0][2], j[0][3], fill=j[1][1], outline="black")
-
-            #show edges
-            """
-            for j in i.list_edges2d:
-                self.screen.create_line(j[0][0], j[0][1], j[1][0], j[1][1], fill="black")"""
 
         self.screen.update()
         self.root.update()

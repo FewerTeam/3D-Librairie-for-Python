@@ -18,6 +18,7 @@ class Screen(object):
         - showgrid : define if we show the grid of the 3 axis (default True).
         - title : the title of the screen.
         """
+        self.MOVE = 5
         self.width = width
         self.height = height
         self.title = title
@@ -44,8 +45,18 @@ class Screen(object):
         self.screen_f = Frame(self.root)
         self.screen_f.pack()
 
-        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
+        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc, cursor="watch")
         self.screen.pack()
+
+        self.move_frame = Frame(self.root, border=5, bg="white", cursor="fleur")
+        self.move_frame.pack()
+
+        self.move_frame_up = Frame(self.move_frame)
+        self.move_frame_up.pack()
+        self.move_frame_middle = Frame(self.move_frame)
+        self.move_frame_middle.pack()
+        self.move_frame_down = Frame(self.move_frame)
+        self.move_frame_down.pack()
 
         self.quitbtnFrame = Frame(self.root)
         self.quitbtnFrame.pack()
@@ -74,7 +85,7 @@ class Screen(object):
     def addquitbutton(self, text):
         """Show the quit button in the screen, and ad text to it."""
         if self.quitbtn == None:
-            self.quitbtn = Button(self.quitbtnFrame, text=text, command=self.root.destroy)
+            self.quitbtn = Button(self.quitbtnFrame, text=text, command=self.root.destroy, bg="red")
             self.quitbtn.pack()
             return 1
         else:
@@ -94,70 +105,40 @@ class Screen(object):
 
     def allow_move(self):
         """Allow translations"""
-        self.screen.bind("<Button-1>", self.move)
+        # !!! movements are inversed !!! #
+        Button(self.move_frame_up, text="\u2191", command=self.move_u).pack()
+        Button(self.move_frame_middle, text="\u2190", command=self.move_r).pack(side=LEFT)
+        Button(self.move_frame_middle, text="X", command=self.move_reset, bg="red").pack(side=LEFT)
+        Button(self.move_frame_middle, text="\u2192", command=self.move_l).pack(side=LEFT)
+        Button(self.move_frame_down, text="\u2193", command=self.move_d).pack()
 
-    def move(self, event):
-        x = event.x
-        y = event.y
-        #Determine the type of the event
-        #
-        #### ! LOGICAL ERROR HERE ! ######
-        # --> execute testfile.py and try to move with left click and motion
-        if x < self.last_x:
-            etx = "Left"
-        elif x > self.last_x:
-            etx = "Right"
-        else:
-            etx = None
-        if y < self.last_y:
-            ety = "Up"
-        elif y > self.last_y:
-            ety = "Down"
-        else:
-            ety = None
-        
-        #Move
-        MOD = 50
-        if etx == "Left":
-            v = self.last_x - x
-            v /= MOD
-            self.move_l(v)
-        if etx == "Right":
-            v = x - self.last_x
-            v /= MOD
-            self.move_r(v)
-        if ety == "Up":
-            v = self.last_y - y
-            v /= MOD
-            self.move_u(v)
-        if ety == "Down":
-            v = y - self.last_y
-            v /= MOD
-            self.move_d(v)
-
-        self.last_x = x
-        self.last_y = y
-
+    def move(self):
+        """DON'T CALL ME !
+        Total reload for apply move"""
         self.reload()
         self.build()
-        self.allow_move()
 
+    def move_reset(self):
+        """Reset all move modifficators"""
+        self.x = 0
+        self.y = 0
+        self.move()
     
-    def move_l(self, value):
-        print("I go to the left with value {0}".format(value))
-        self.x += value
+    def move_l(self):
+        self.x += self.MOVE
+        self.move()
 
-    def move_r(self, value):
-        print("I go to the right with value {0}".format(value))
-        self.x -= value
+    def move_r(self):
+        self.x -= self.MOVE
+        self.move()
 
-    def move_u(self, value):
-        print("I go to the up with value {0}".format(value))
-        self.y -= value
+    def move_u(self):
+        self.y -= self.MOVE
+        self.move()
 
-    def move_d(self, value):
-        print("I go to the down with value {0}".format(value))
-        self.y += value
+    def move_d(self):
+        self.y += self.MOVE
+        self.move()
 
     def mainloop(self):
         mainloop()
@@ -174,7 +155,7 @@ class Screen(object):
     def reload(self):
         """Reload the Screen."""
         self.screen.destroy()
-        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
+        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc, cursor="watch")
         self.screen.pack()
         #reset lists
         for i in self.list_object:

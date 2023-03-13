@@ -26,6 +26,7 @@ class Screen(object):
         self.type = type3d
         self.lock = lock
         self.showgrid = showgrid
+        self.zoom = 1
 
         #Spectator values :
         self.x = 0
@@ -48,8 +49,13 @@ class Screen(object):
         self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc, cursor="watch")
         self.screen.pack()
 
-        self.move_frame = Frame(self.root, border=5, bg="white", cursor="fleur")
-        self.move_frame.pack()
+        self.move_g = Frame(self.root)
+        self.move_g.pack()
+
+        #translations
+
+        self.move_frame = Frame(self.move_g, border=5, bg="white", cursor="fleur")
+        self.move_frame.pack(side=LEFT)
 
         self.move_frame_up = Frame(self.move_frame)
         self.move_frame_up.pack()
@@ -57,6 +63,11 @@ class Screen(object):
         self.move_frame_middle.pack()
         self.move_frame_down = Frame(self.move_frame)
         self.move_frame_down.pack()
+
+        #zoom
+
+        self.zoom_frame = Frame(self.move_g, border=5, bg="white", cursor="double_arrow")
+        self.zoom_frame.pack(side=LEFT)
 
         self.quitbtnFrame = Frame(self.root)
         self.quitbtnFrame.pack()
@@ -82,6 +93,39 @@ class Screen(object):
         except:
             pass
 
+    def allow_zoom(self):
+        """Allow user to move"""
+        Label(self.zoom_frame, text="ZOOM", bg="white").pack()
+        Button(self.zoom_frame, text="+", command=self.user_zoom_up).pack()
+        Button(self.zoom_frame, text="X", command=self.reset_zoom, bg="red").pack()
+        Button(self.zoom_frame, text=" - ", command=self.user_zoom_down).pack()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
+    def user_zoom_up(self):
+        """Add 1 to self.zoom"""
+        self.modify_zoom(1)
+        self.move()
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
+    def reset_zoom(self):
+        """Reset the zoom factor"""
+        self.zoom = 1
+        self.move()
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
+    def user_zoom_down(self):
+        """Remove 1 to self.zoom"""
+        self.modify_zoom(-1)
+        self.move()
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
     def addquitbutton(self, text):
         """Show the quit button in the screen, and ad text to it."""
         if self.quitbtn == None:
@@ -106,6 +150,7 @@ class Screen(object):
     def allow_move(self):
         """Allow translations"""
         # !!! movements are inversed !!! #
+        Label(self.move_frame_up, text="MOVE", bg="white").pack()
         Button(self.move_frame_up, text="\u2191", command=self.move_u).pack()
         Button(self.move_frame_middle, text="\u2190", command=self.move_r).pack(side=LEFT)
         Button(self.move_frame_middle, text="X", command=self.move_reset, bg="red").pack(side=LEFT)
@@ -199,6 +244,9 @@ class Screen(object):
         Arguments : 
         - zoom : the new zoom factor --> float (0 < zoom)"""
         self.zoom = zoom
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
 
     def modify_zoom(self, mod):
         """Modify the zoom factor
@@ -207,6 +255,9 @@ class Screen(object):
         --> return Screen.zoom"""
         self.zoom += mod
         return self.zoom
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
 
     def build(self, mode="()"):
         """Build all the 3d object into the screen"""

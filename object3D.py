@@ -19,19 +19,38 @@ class Object3D(object):
         self.id_ = id_
 
     def __repr__(self):
-        print("""
+        a =  """
         ------------------------------------------------------
         3D object with id {0}
-        ----------- Points -------------""".format(self.id_))
+        ----------- Points -------------\n""".format(self.id_)
         for j, i in enumerate(self.list_points):
-            print(str(j+1) + " : " + i.__repr__())
-        print("----------- Edges -------------")
+            a += str(j+1) + " : " + i.__repr__() + "\n"
+        a += "----------- Edges -------------\n"
         for j, i in enumerate(self.list_edges):
-            print(str(j+1) + " : " + i.__repr__())
-        print("----------- Faces -------------")
+            a += str(j+1) + " : " + i.__repr__() + "\n"
+        a += "----------- Faces -------------\n"
         for j, i in enumerate(self.list_faces):
-            print(str(j+1) + " : " + i.__repr__())
-        print("------------------------------------------------------\n")
+            a += str(j+1) + " : " + i.__repr__() + "\n"
+        a += "------------------------------------------------------\n"
+
+        return a
+
+    def __str__(self):
+        a =  """
+        ------------------------------------------------------
+        3D object with id {0}
+        ----------- Points -------------\n""".format(self.id_)
+        for j, i in enumerate(self.list_points):
+            a += str(j+1) + " : " + i.__repr__() + "\n"
+        a += "----------- Edges -------------\n"
+        for j, i in enumerate(self.list_edges):
+            a += str(j+1) + " : " + i.__repr__() + "\n"
+        a += "----------- Faces -------------\n"
+        for j, i in enumerate(self.list_faces):
+            a += str(j+1) + " : " + i.__repr__() + "\n"
+        a += "------------------------------------------------------\n"
+
+        return a
 
 
     def get(self):

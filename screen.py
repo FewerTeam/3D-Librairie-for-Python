@@ -18,6 +18,7 @@ class Screen(object):
         - showgrid : define if we show the grid of the 3 axis (default True).
         - title : the title of the screen.
         """
+        self.MOVE = 5
         self.width = width
         self.height = height
         self.title = title
@@ -25,10 +26,9 @@ class Screen(object):
         self.type = type3d
         self.lock = lock
         self.showgrid = showgrid
-
         self.zoom = 1
 
-        #Spectator values :ignore
+        #Spectator values :
         self.x = 0
         self.y = 0
         self.z = 0
@@ -46,8 +46,28 @@ class Screen(object):
         self.screen_f = Frame(self.root)
         self.screen_f.pack()
 
-        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
+        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc, cursor="watch")
         self.screen.pack()
+
+        self.move_g = Frame(self.root)
+        self.move_g.pack()
+
+        #translations
+
+        self.move_frame = Frame(self.move_g, border=5, bg="white", cursor="fleur")
+        self.move_frame.pack(side=LEFT)
+
+        self.move_frame_up = Frame(self.move_frame)
+        self.move_frame_up.pack()
+        self.move_frame_middle = Frame(self.move_frame)
+        self.move_frame_middle.pack()
+        self.move_frame_down = Frame(self.move_frame)
+        self.move_frame_down.pack()
+
+        #zoom
+
+        self.zoom_frame = Frame(self.move_g, border=5, bg="white", cursor="double_arrow")
+        self.zoom_frame.pack(side=LEFT)
 
         self.quitbtnFrame = Frame(self.root)
         self.quitbtnFrame.pack()
@@ -55,10 +75,61 @@ class Screen(object):
 
         self.list_object = []
 
+    def __str__(self):
+        for i, j in enumerate(self.list_object):
+            return "Object {0} : \n{1}".format(i, j)
+        if self.list_object == []:
+            return "There is nothing to show..."
+        
+    def __repr__(self):
+        for i, j in enumerate(self.list_object):
+            return "Object {0} : \n{1}".format(str(i), j)
+        if self.list_object == []:
+            return "There is nothing to show..."
+        
+    def __del__(self):
+        try:
+            self.root.destroy()
+        except:
+            pass
+
+    def allow_zoom(self):
+        """Allow user to move"""
+        Label(self.zoom_frame, text="ZOOM", bg="white").pack()
+        Button(self.zoom_frame, text="+", command=self.user_zoom_up).pack()
+        Button(self.zoom_frame, text="X", command=self.reset_zoom, bg="red").pack()
+        Button(self.zoom_frame, text=" - ", command=self.user_zoom_down).pack()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
+    def user_zoom_up(self):
+        """Add 1 to self.zoom"""
+        self.modify_zoom(1)
+        self.move()
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
+    def reset_zoom(self):
+        """Reset the zoom factor"""
+        self.zoom = 1
+        self.move()
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
+    def user_zoom_down(self):
+        """Remove 1 to self.zoom"""
+        self.modify_zoom(-1)
+        self.move()
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
+
     def addquitbutton(self, text):
         """Show the quit button in the screen, and ad text to it."""
         if self.quitbtn == None:
-            self.quitbtn = Button(self.quitbtnFrame, text=text, command=self.root.destroy)
+            self.quitbtn = Button(self.quitbtnFrame, text=text, command=self.root.destroy, bg="red")
             self.quitbtn.pack()
             return 1
         else:
@@ -76,6 +147,44 @@ class Screen(object):
         if self.showgrid == False:
             self.showgrid = True
 
+    def allow_move(self):
+        """Allow translations"""
+        # !!! movements are inversed !!! #
+        Label(self.move_frame_up, text="MOVE", bg="white").pack()
+        Button(self.move_frame_up, text="\u2191", command=self.move_u).pack()
+        Button(self.move_frame_middle, text="\u2190", command=self.move_r).pack(side=LEFT)
+        Button(self.move_frame_middle, text="X", command=self.move_reset, bg="red").pack(side=LEFT)
+        Button(self.move_frame_middle, text="\u2192", command=self.move_l).pack(side=LEFT)
+        Button(self.move_frame_down, text="\u2193", command=self.move_d).pack()
+
+    def move(self):
+        """DON'T CALL ME !
+        Total reload for apply move"""
+        self.reload()
+        self.build()
+
+    def move_reset(self):
+        """Reset all move modifficators"""
+        self.x = 0
+        self.y = 0
+        self.move()
+    
+    def move_l(self):
+        self.x += self.MOVE
+        self.move()
+
+    def move_r(self):
+        self.x -= self.MOVE
+        self.move()
+
+    def move_u(self):
+        self.y -= self.MOVE
+        self.move()
+
+    def move_d(self):
+        self.y += self.MOVE
+        self.move()
+
     def mainloop(self):
         mainloop()
 
@@ -89,24 +198,18 @@ class Screen(object):
         
 
     def reload(self):
-        """Reload the Screen : show modifications"""
-        self.list_points = []
-        self.priority = []
+        """Reload the Screen."""
         self.screen.destroy()
-        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc)
+        self.screen = Canvas(self.screen_f, width=self.width, height=self.height, bg=self.bc, cursor="watch")
         self.screen.pack()
-
-        #Enumerating the list of objects and giving their points list
+        #reset lists
         for i in self.list_object:
-            #i = one object
-            x = i.get()
-            #giving i's list of tuple
-            for j in x:
-                #j = a tuple
-                #Checking if the tuple has 3 items
-                if not(len(x) == 2):
-                    raise PointError("A point hasn't got 3 coords.")
-                
+            i.list_faces2d = []
+            i.list_edges2d = []
+
+    def set_priority(self):
+        """Give the priority of visual (what I show or not)"""
+        ...
 
     def convertise(self, point3d, perspective="()"):
         """Convertise points 3d to a points 2d.
@@ -133,18 +236,28 @@ class Screen(object):
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
-        return ((point3d[0] + point3d[2]/2)*self.zoom, 
-                (point3d[1] + point3d[2]/2)*self.zoom)
-        factor = (point3d[2] / 10) * self.zoom
-        return ((point3d[0] * factor), 
-                (point3d[1] * factor))
-
+        return ((point3d[0] + point3d[2]/2)*self.zoom + self.x, 
+                (point3d[1] + point3d[2]/2)*self.zoom + self.y)
+    
     def set_zoom(self, zoom):
         """Modify the zoom factor.
         Arguments : 
         - zoom : the new zoom factor --> float (0 < zoom)"""
         self.zoom = zoom
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
 
+    def modify_zoom(self, mod):
+        """Modify the zoom factor
+        Arguments :
+        - mod : the modificator of the zoom (float or int). It is added to Screen.zoom
+        --> return Screen.zoom"""
+        self.zoom += mod
+        return self.zoom
+        self.zoom_show.destroy()
+        self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
+        self.zoom_show.pack()
 
     def build(self, mode="()"):
         """Build all the 3d object into the screen"""
@@ -164,15 +277,15 @@ class Screen(object):
                 if j[1][0] == "color":
                     self.screen.create_polygon(j[0][0], j[0][1], j[0][2], j[0][3], fill=j[1][1], outline="black")
 
-            #show edges
-            """
-            for j in i.list_edges2d:
-                self.screen.create_line(j[0][0], j[0][1], j[1][0], j[1][1], fill="black")"""
-
         self.screen.update()
         self.root.update()
 
     def get_id(self):
         """Return a new id for a new 3D object."""
         return len(self.list_object) + 1
-    
+
+    def addframe(self):
+        """Add a "border" to the screen"""
+        p1 = self.convertise((0, 0, 0))
+        p2 = self.convertise((self.width, self.height, 0))
+        self.screen.create_rectangle(p1[0], p1[1], p2[0], p2[1], outline="black")

@@ -93,6 +93,36 @@ class Screen(object):
         except:
             pass
 
+    def project_point(self, point, camera, rotation):
+        #THANKS TO CHAT OPENAI (CHAT GPT0 FOR THIS METHOD) !
+        import math
+        # Translate the point relative to the camera position
+        x = point[0] - camera[0]
+        y = point[1] - camera[1]
+        z = point[2] - camera[2]
+
+        # Apply rotations around the x, y, and z axes
+        cos_x = math.cos(rotation[0])
+        sin_x = math.sin(rotation[0])
+        cos_y = math.cos(rotation[1])
+        sin_y = math.sin(rotation[1])
+        cos_z = math.cos(rotation[2])
+        sin_z = math.sin(rotation[2])
+
+        x_rot = x * cos_y * cos_z + y * (sin_x * sin_y * cos_z - cos_x * sin_z) + z * (cos_x * sin_y * cos_z + sin_x * sin_z)
+        y_rot = x * cos_y * sin_z + y * (sin_x * sin_y * sin_z + cos_x * cos_z) + z * (cos_x * sin_y * sin_z - sin_x * cos_z)
+        z_rot = -x * sin_y + y * sin_x * cos_y + z * cos_x * cos_y
+
+        # Project the point onto the screen
+        distance = camera[2] - z_rot
+        x_proj = distance * x_rot / (camera[2]+0.001)
+        y_proj = distance * y_rot / (camera[2]+0.001)
+
+        return (x_proj*self.zoom, y_proj*self.zoom)
+    
+   
+
+
     def allow_zoom(self):
         """Allow user to move"""
         Label(self.zoom_frame, text="ZOOM", bg="white").pack()
@@ -120,7 +150,7 @@ class Screen(object):
 
     def user_zoom_down(self):
         """Remove 1 to self.zoom"""
-        self.modify_zoom(-1)
+        self.modify_zoom(-0.01)
         self.move()
         self.zoom_show.destroy()
         self.zoom_show = Label(self.zoom_frame, text="{0} %".format(self.zoom*100), bg="white")
@@ -217,13 +247,14 @@ class Screen(object):
         - point 3d : the point 3d (tuple of the 3 axis)
         return the point 2d
         - perspective : the perspective used. Can be "//" (parallel) or "()" (humain perspective). "//" is the default value."""
-        if perspective == "//":
+        """if perspective == "//":
             return self._convertise_parallel(point3d)
         elif perspective == "()":
             return self._convertise_humain(point3d)
         else:
             raise UnknowModeNameError("This mode doesn't exist, or isn't anvaible. Please check the doc.")
-            exit(2)
+            exit(2)"""
+        return self.project_point(point3d, (self.x, self.y, self.z), (self.orient_y, self.orient_z, 0))
         
 
     def _convertise_parallel(self, point3d):

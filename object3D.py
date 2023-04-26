@@ -100,6 +100,7 @@ class Cube(Object3D):
         self.list_edges.append(self.create_edge(self.list_points[0-1], self.list_points[3-1]))
 
         #Here we create all the faces of the cube, and add them to the list.
+        """Wrong code
 
         if self.skin == None:
             #GOOD
@@ -117,5 +118,24 @@ class Cube(Object3D):
             self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[1-1], self.list_points[6-1], self.list_points[5-1]], self.skin))
             self.list_faces.append(self.create_face([self.list_points[0-1], self.list_points[3-1], self.list_points[5-1], self.list_points[6-1]], self.skin))
             self.list_faces.append(self.create_face([self.list_points[2-1], self.list_points[3-1], self.list_points[4-1], self.list_points[7-1]], self.skin))
-            self.list_faces.append(self.create_face([self.list_points[1-1], self.list_points[2-1], self.list_points[7-1], self.list_points[6-1]], self.skin))
+            self.list_faces.append(self.create_face([self.list_points[1-1], self.list_points[2-1], self.list_points[7-1], self.list_points[6-1]], self.skin))"""
+        self.list_faces = self.get_cube_faces(points)
+
+    def get_cube_faces(self, points):
+        faces = [
+            # front face
+            [0, 1, 2, 3],
+            # back face
+            [4, 5, 6, 7],
+            # right face
+            [0, 3, 7, 4],
+            # left face
+            [1, 2, 6, 5],
+            # top face
+            [0, 1, 5, 4],
+            # bottom face
+            [2, 3, 7, 6]
+        ]
+        return [list(map(lambda x: points[x], face)) for face in faces]
+
         

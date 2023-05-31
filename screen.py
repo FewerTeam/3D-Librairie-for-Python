@@ -3,6 +3,7 @@
 from tkinter import *
 import object3D     #Dev in the project
 from Python_3D_Libs_errors import *
+from math import *
 
 class Screen(object):
     """Screen is a class who create a Tk screen, and who can have 3d objects."""
@@ -95,34 +96,30 @@ class Screen(object):
 
     def project_point(self, point, camera, rotation):
         #THANKS TO CHAT OPENAI (CHAT GPT0 FOR THIS METHOD) !
-        import math
-        # Translate the point relative to the camera position
-        x = point[0] - camera[0]
-        y = point[1] - camera[1]
-        z = point[2] - camera[2]
+        xCam, yCam, zCam = camera
+        roll, pitch, yaw = rotation
+        xPoint, yPoint, zPoint = point
 
-        # Apply rotations around the x, y, and z axes
-        cos_x = math.cos(rotation[0])
-        sin_x = math.sin(rotation[0])
-        cos_y = math.cos(rotation[1])
-        sin_y = math.sin(rotation[1])
-        cos_z = math.cos(rotation[2])
-        sin_z = math.sin(rotation[2])
+        # Translation
+        xTrans = xPoint - xCam
+        yTrans = yPoint - yCam
+        zTrans = zPoint - zCam
 
-        x_rot = x * cos_y * cos_z + y * (sin_x * sin_y * cos_z - cos_x * sin_z) + z * (cos_x * sin_y * cos_z + sin_x * sin_z)
-        y_rot = x * cos_y * sin_z + y * (sin_x * sin_y * sin_z + cos_x * cos_z) + z * (cos_x * sin_y * sin_z - sin_x * cos_z)
-        z_rot = -x * sin_y + y * sin_x * cos_y + z * cos_x * cos_y
+        # Rotation
+        xRot = xTrans * math.cos(-yaw) * math.cos(-pitch) - yTrans * math.sin(-yaw) * math.cos(-roll) + zTrans * math.sin(-roll)
+        yRot = xTrans * math.sin(-yaw) * math.cos(-pitch) + yTrans * math.cos(-yaw) * math.cos(-roll) + zTrans * math.sin(-pitch) * math.sin(-roll)
+        zRot = -xTrans * math.sin(-pitch) + yTrans * math.sin(-roll) + zTrans * math.cos(-pitch) * math.cos(-roll)
 
-        # Project the point onto the screen
-        distance = camera[2] - z_rot
-        x_proj = distance * x_rot / (camera[2]+0.001)
-        y_proj = distance * y_rot / (camera[2]+0.001)
+        # Projection
+        xNormalized = xRot / zRot
+        yNormalized = yRot / zRot
 
-        return (x_proj*self.zoom, y_proj*self.zoom)
+        #
+        xFinal = xNormalized
+        yFinal = yNormalized
+
+        return (xFinal*self.zoom, yFinal*self.zoom)
     
-   
-
-
     def allow_zoom(self):
         """Allow user to move"""
         Label(self.zoom_frame, text="ZOOM", bg="white").pack()

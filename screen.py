@@ -106,9 +106,9 @@ class Screen(object):
         zTrans = zPoint - zCam
 
         # Rotation
-        xRot = xTrans * math.cos(-yaw) * math.cos(-pitch) - yTrans * math.sin(-yaw) * math.cos(-roll) + zTrans * math.sin(-roll)
-        yRot = xTrans * math.sin(-yaw) * math.cos(-pitch) + yTrans * math.cos(-yaw) * math.cos(-roll) + zTrans * math.sin(-pitch) * math.sin(-roll)
-        zRot = -xTrans * math.sin(-pitch) + yTrans * math.sin(-roll) + zTrans * math.cos(-pitch) * math.cos(-roll)
+        xRot = xTrans * cos(-yaw) * cos(-pitch) - yTrans * sin(-yaw) * cos(-roll) + zTrans * sin(-roll)
+        yRot = xTrans * sin(-yaw) * cos(-pitch) + yTrans * cos(-yaw) * cos(-roll) + zTrans * sin(-pitch) * sin(-roll)
+        zRot = -xTrans * sin(-pitch) + yTrans * sin(-roll) + zTrans * cos(-pitch) * cos(-roll)
 
         # Projection
         xNormalized = xRot / zRot

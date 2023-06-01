@@ -123,19 +123,13 @@ class Cube(Object3D):
 
     def get_cube_faces(self, points):
         faces = [
-            # front face
-            [0, 1, 2, 3],
-            # back face
-            [4, 5, 6, 7],
-            # right face
-            [0, 3, 7, 4],
-            # left face
-            [1, 2, 6, 5],
-            # top face
-            [0, 1, 5, 4],
-            # bottom face
-            [2, 3, 7, 6]
+            self.create_face((self.list_points[0], self.list_points[1], self.list_points[2], self.list_points[3])),
+            self.create_face((self.list_points[4], self.list_points[5], self.list_points[6], self.list_points[7])),
+            self.create_face((self.list_points[0], self.list_points[3], self.list_points[7], self.list_points[4])),
+            self.create_face((self.list_points[1], self.list_points[2], self.list_points[6], self.list_points[5])),
+            self.create_face((self.list_points[0], self.list_points[1], self.list_points[5], self.list_points[4])),
+            self.create_face((self.list_points[2], self.list_points[3], self.list_points[7], self.list_points[6]))
         ]
-        return [list(map(lambda x: points[x], face)) for face in faces]
+        return faces
 
         

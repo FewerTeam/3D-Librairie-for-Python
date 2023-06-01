@@ -98,7 +98,9 @@ class Screen(object):
         #THANKS TO CHAT OPENAI (CHAT GPT0 FOR THIS METHOD) !
         xCam, yCam, zCam = camera
         roll, pitch, yaw = rotation
-        xPoint, yPoint, zPoint = point
+        xPoint = point[0]
+        yPoint = point[1]
+        zPoint = point[2]
 
         # Translation
         xTrans = xPoint - xCam
@@ -255,15 +257,19 @@ class Screen(object):
         
 
     def _convertise_parallel(self, point3d):
+        """DEPRECATED"""
         """Convertise a 3d point to a 2d point with the rules of the isometric perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+        raise DeprecationWarning
         raise NotTestedCodeWarning("This method wasn't tested / coded ! Please check the version of the librairie.")
 
     def _convertise_humain(self, point3d):
+        """DEPRECATED"""
         """Convertise a 3d point to a 2d point with the rules of the "humain" perspective.
         Arguments : 
         - point3d : the point3d who will be convertised."""
+        raise DeprecationWarning
         return ((point3d[0] + point3d[2]/2)*self.zoom + self.x, 
                 (point3d[1] + point3d[2]/2)*self.zoom + self.y)
     
